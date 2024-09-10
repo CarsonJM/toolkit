@@ -1,0 +1,59 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "coverm_contig"
+description: Align reads to a contig-containing FastA file.
+keywords:
+  - alignment
+  - abundance
+  - bam
+  - contig
+tools:
+  - "coverm":
+      description: "CoverM aims to be a configurable, easy to use and fast DNA read coverage and relative abundance calculator focused on metagenomics applications"
+      homepage: "https://github.com/wwood/CoverM"
+      documentation: "https://wwood.github.io/CoverM/coverm-contig.html"
+      tool_dev_url: "https://github.com/wwood/CoverM"
+      licence: ["GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  - fastq:
+      type: file
+      description: List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+  - fasta:
+      type: file
+      description: Contig-containing FastA file to align reads to.
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  - alignment_results:
+      type: file
+      description: |
+        TSV file with the abundance of each contig
+        calculated using the metric specified by `--methods` (default=mean).
+      pattern: "*.tsv"
+  - bam:
+      type: file
+      description: Output BAM file containing read alignments
+      pattern: "*.bam"
+  - log:
+      type: file
+      description: Aligment log
+      pattern: "*.log"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@CarsonJM"
+maintainers:
+  - "@CarsonJM"

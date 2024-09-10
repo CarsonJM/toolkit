@@ -1,0 +1,92 @@
+name: cobrameta
+description: A tool to raise the quality of viral genomes assembled from short-read metagenomes via resolving and joining of contigs fragmented during de novo assembly.
+keywords:
+  - cobra
+  - contig
+  - scaffold
+  - assembly
+  - extension
+  - virus
+  - phage
+tools:
+  - cobra-meta:
+      description: COBRA is a tool to get higher quality viral genomes assembled from metagenomes.
+      homepage: https://github.com/linxingchen/cobra
+      documentation: https://github.com/linxingchen/cobra
+      tool_dev_url: https://github.com/linxingchen/cobra
+      doi: 10.1038/s41564-023-01598-2
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1' ]`
+  - fasta:
+      type: file
+      description: |
+        Assembly file (contigs/scaffolds) in FASTA format
+      pattern: "*.{fa,fasta,fna,fa.gz,fasta.gz,fna.gz}"
+  - coverage:
+      type: file
+      description: |
+        TSV file with 2 columns containing 1) the contig/scaffold id and
+        2) the coverage depth of the sequence specified in column 1
+      pattern: "*.{tsv,txt}"
+  - query:
+      type: file
+      description: |
+        File containing the query contigs that the user wants COBRA to extend. This
+        can be provided in one-column TXT or FASTA format. (The IDs must match the IDs
+        in the `--fasta` file exactly)
+      pattern: "*.{txt,fasta}"
+  - bam:
+      type: file
+      description: |
+        Sorted BAM/CRAM/SAM file resulting from mapping reads used in assembly
+        to the resulting assembly FASTA
+      pattern: "*.{bam,cram,sam}"
+  - assembler:
+      type: string
+      description: The name of the tool used to assemble contigs
+      pattern: "{metaspades,megahit,idba}"
+  - mink:
+      type: integer
+      description: The minimum kmer size used to assemble contigs
+      pattern: "[0-9]+"
+  - maxk:
+      type: integer
+      description: The maximum kmer size used to assemble contigs
+      pattern: "[0-9]+"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  - fasta:
+      type: file
+      description: |
+        Gzipped FastA file containing query contigs that were extended.
+      pattern: "*_COBRA_extended.fasta"
+  - joining_summary:
+      type: file
+      description: |
+        TSV file containing information regarding COBRA's extension results
+      pattern: "*_COBRA_joining_summary.txt"
+  - log:
+      type: file
+      description: |
+        Log file containing the stdout of COBRA
+      pattern: "*.cobra.log"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@CarsonJM"
+maintainers:
+  - "@CarsonJM"

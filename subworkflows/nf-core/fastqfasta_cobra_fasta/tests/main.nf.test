@@ -1,0 +1,65 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTQFASTA_COBRA_FASTA"
+    script "../main.nf"
+    workflow "FASTQFASTA_COBRA_FASTA"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fastqfasta_cobra_fasta"
+    tag "coverm"
+    tag "coverm/contig"
+    tag "cobrameta"
+
+    test("b_fragilis - fastq.gz - fasta.gz") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'test1', single_end:false ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_2.fastq.gz', checkIfExists: true),
+                        ]
+                    ],
+                    [
+                        [ id:'test2', single_end:false ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test2_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test2_2.fastq.gz', checkIfExists: true),
+                        ]
+                    ]
+                )
+                input[1] = Channel.of(
+                    [
+                        [ id:'test1', single_end:false, assembler:'megahit', mink:21, maxk:141 ],
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists: true)
+                    ],
+                    [
+                        [ id:'test2', single_end:false, assembler:'megahit', mink:21, maxk:141 ],
+                        file("${projectDir}/assets/test-datasets/genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test2.contigs.fa.gz", checkIfExists: true)
+                    ]
+                )
+                input[2] = Channel.of(
+                    [
+                        [ id:'test1', single_end:false ],
+                        file("${projectDir}/assets/test-datasets/genomics/prokaryotes/bacteroides_fragilis/text/test1_contig_names.tsv", checkIfExists: true)
+                    ],
+                    [
+                        [ id:'test2', single_end:false ],
+                        file("${projectDir}/assets/test-datasets/genomics/prokaryotes/bacteroides_fragilis/text/test2_contig_names.tsv", checkIfExists: true)
+                    ]
+                )
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out).match()}
+            )
+        }
+    }
+}

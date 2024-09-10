@@ -1,0 +1,2 @@
+phables/install:
+  - "modules/nf-microbe/phables/install/**"

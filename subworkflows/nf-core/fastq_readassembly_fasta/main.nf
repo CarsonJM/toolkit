@@ -41,6 +41,12 @@ workflow FASTQ_READASSEMBLY_FASTA {
             fastq_gz.map { meta, fasta -> [ meta + [ assembler: 'megahit_single' ], fasta ] }
         ).contigs
         ch_assemblies_prefilt_fasta_gz  = ch_assemblies_prefilt_fasta_gz.mix(MEGAHIT_SINGLE.out.contigs)
+            .join(MEGAHIT_SINGLE.out.min_kmer)
+            .join(MEGAHIT_SINGLE.out.max_kmer)
+            .map { meta, fasta, min_kmer, max_kmer ->
+                [ meta + [ mink: min_kmer, maxk: max_kmer ], fasta ]
+            }
+        ch_assembly_graph_gz            = ch_assembly_graph_gz.mix(MEGAHIT_SINGLE.out.gfa)
         ch_versions                     = ch_versions.mix(MEGAHIT_SINGLE.out.versions)
     }
 
@@ -65,8 +71,18 @@ workflow FASTQ_READASSEMBLY_FASTA {
         )
         if (use_spades_scaffolds) {
             ch_spades_single_fasta_gz   = SPADES_SINGLE.out.scaffolds
+                .join(SPADES_SINGLE.out.min_kmer)
+                .join(SPADES_SINGLE.out.max_kmer)
+                .map { meta, fasta, min_kmer, max_kmer ->
+                    [ meta + [ mink: min_kmer, maxk: max_kmer ], fasta ]
+                }
         } else {
             ch_spades_single_fasta_gz   = SPADES_SINGLE.out.contigs
+                .join(SPADES_SINGLE.out.min_kmer)
+                .join(SPADES_SINGLE.out.max_kmer)
+                .map { meta, fasta, min_kmer, max_kmer ->
+                    [ meta + [ mink: min_kmer, maxk: max_kmer ], fasta ]
+                }
         }
         ch_assemblies_prefilt_fasta_gz  = ch_assemblies_prefilt_fasta_gz.mix(ch_spades_single_fasta_gz)
         ch_assembly_graph_gz            = ch_assembly_graph_gz.mix(SPADES_SINGLE.out.gfa)
@@ -128,6 +144,13 @@ workflow FASTQ_READASSEMBLY_FASTA {
         )
         ch_versions                     = ch_versions.mix(MEGAHIT_COASSEMBLY.out.versions)
         ch_assemblies_prefilt_fasta_gz  = ch_assemblies_prefilt_fasta_gz.mix(MEGAHIT_COASSEMBLY.out.contigs)
+            .join(MEGAHIT_COASSEMBLY.out.min_kmer)
+            .join(MEGAHIT_COASSEMBLY.out.max_kmer)
+            .map { meta, fasta, min_kmer, max_kmer ->
+                [ meta + [ mink: min_kmer, maxk: max_kmer ], fasta ]
+            }
+        ch_assembly_graph_gz            = ch_assembly_graph_gz.mix(MEGAHIT_COASSEMBLY.out.gfa)
+
     }
 
     if (run_spades_coassembly) {
@@ -150,11 +173,21 @@ workflow FASTQ_READASSEMBLY_FASTA {
             []
         )
         if (use_spades_scaffolds) {
-            ch_metaspades_co_fasta_gz   = SPADES_COASSEMBLY.out.scaffolds
+            ch_spades_co_fasta_gz   = SPADES_COASSEMBLY.out.scaffolds
+                .join(SPADES_COASSEMBLY.out.min_kmer)
+                .join(SPADES_COASSEMBLY.out.max_kmer)
+                .map { meta, fasta, min_kmer, max_kmer ->
+                    [ meta + [ mink: min_kmer, maxk: max_kmer ], fasta ]
+                }
         } else {
-            ch_metaspades_co_fasta_gz   = SPADES_COASSEMBLY.out.contigs
+            ch_spades_co_fasta_gz   = SPADES_COASSEMBLY.out.contigs
+                .join(SPADES_COASSEMBLY.out.min_kmer)
+                .join(SPADES_COASSEMBLY.out.max_kmer)
+                .map { meta, fasta, min_kmer, max_kmer ->
+                    [ meta + [ mink: min_kmer, maxk: max_kmer ], fasta ]
+                }
         }
-        ch_assemblies_prefilt_fasta_gz  = ch_assemblies_prefilt_fasta_gz.mix(ch_metaspades_co_fasta_gz)
+        ch_assemblies_prefilt_fasta_gz  = ch_assemblies_prefilt_fasta_gz.mix(ch_spades_co_fasta_gz)
         ch_assembly_graph_gz            = ch_assembly_graph_gz.mix(SPADES_COASSEMBLY.out.gfa)
         ch_spades_logs                  = ch_spades_logs.mix(SPADES_COASSEMBLY.out.log)
         ch_versions                     = ch_versions.mix(SPADES_COASSEMBLY.out.versions)
@@ -176,7 +209,7 @@ workflow FASTQ_READASSEMBLY_FASTA {
     ch_assemblies_fasta_gz = rmEmptyFastAs(ch_assemblies_prefilt_fasta_gz, false)
 
     emit:
-    assemblies_fasta_gz = ch_assemblies_fasta_gz    // channel: [ [ meta.id, meta.single_end, meta.group, meta.assembler ], assembly.fasta.gz ]
+    assemblies_fasta_gz = ch_assemblies_fasta_gz    // channel: [ [ meta.id, meta.single_end, meta.group, meta.assembler, meta.mink, meta.maxk ], assembly.fasta.gz ]
     assembly_graph_gz   = ch_assembly_graph_gz      // channel: [ [ meta.id, meta.single_end, meta.group, meta.assembler ], assembly_graph.gfa.gz ]
     spades_logs         = ch_spades_logs            // channel: [ [ meta.id, meta.single_end, meta.group, meta.assembler ], spades.log ]
     multiqc_files       = ch_multiqc_files          // channel: /path.to/multiqc_files

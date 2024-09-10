@@ -1,0 +1,2 @@
+subworkflows/fastqfasta_cobra_fasta:
+  - subworkflows/nf-core/fastqfasta_cobra_fasta/**

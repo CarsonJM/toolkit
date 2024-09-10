@@ -1,0 +1,39 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTA_GENOMAD_FASTATSV"
+    script "../main.nf"
+    workflow "FASTA_GENOMAD_FASTATSV"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fasta_genomad_fastatsv"
+    tag "genomad"
+    tag "genomad/download"
+    tag "genomad/endtoend"
+
+    test("sarscov2 - genome - fasta") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'test1' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                    ],
+                    [
+                        [ id:'test2' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                    ]
+                )
+                input[1] = null
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+}

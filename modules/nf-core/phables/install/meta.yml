@@ -1,0 +1,30 @@
+name: "phables_install"
+description: Resolve phage-derived assembly graphs.
+keywords:
+  - graph
+  - resolution
+  - assembly
+  - phage
+tools:
+  - "phables":
+      description: "Phables: from fragmented assemblies to high-quality bacteriophage genomes"
+      homepage: "https://phables.readthedocs.io/"
+      documentation: "https://phables.readthedocs.io/"
+      tool_dev_url: "https://github.com/Vini2/phables"
+      doi: "10.1093/bioinformatics/btad586"
+      licence: ["MIT"]
+
+output:
+  - phables_db:
+      type: directory
+      description: PHROG and SMG files for unitig alignment.
+      pattern: "*phables_db/"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@CarsonJM"
+maintainers:
+  - "@CarsonJM"

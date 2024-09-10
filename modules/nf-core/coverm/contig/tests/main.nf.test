@@ -1,0 +1,103 @@
+nextflow_process {
+
+    name "Test Process: COVERM_CONTIG"
+    script "../main.nf"
+    process "COVERM_CONTIG"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "coverm"
+    tag "coverm/contig"
+
+    test("fastq.gz se + fasta.gz") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test1', single_end:true ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_1.fastq.gz', checkIfExists: true),
+                    ]
+                ]
+                input[1] = [
+                    [ id: 'test1' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(
+                    process.out.tsv,
+                    file(process.out.bam[0][1]).name,
+                    file(process.out.log[0][1]).name,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+
+    test("fastq.gz pe + fasta.gz") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test1', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test2_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test2_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = [
+                    [ id: 'test1' ],
+                    file("${projectDir}/assets/test-datasets/genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test2.contigs.fa.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(
+                    process.out.tsv,
+                    file(process.out.bam[0][1]).name,
+                    file(process.out.log[0][1]).name,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+
+    test("fastq.gz pe + fasta.gz - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test1' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = [
+                    [ id: 'test1' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+    }
+}

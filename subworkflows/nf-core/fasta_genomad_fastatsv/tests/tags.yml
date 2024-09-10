@@ -1,0 +1,2 @@
+subworkflows/fasta_genomad_fastatsv:
+  - subworkflows/nf-core/fasta_genomad_fastatsv/**

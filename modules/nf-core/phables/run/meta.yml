@@ -1,0 +1,66 @@
+name: "phables_run"
+description: Resolve phage-derived assembly graphs.
+keywords:
+  - graph
+  - resolution
+  - assembly
+  - phage
+tools:
+  - "phables":
+      description: "Phables: from fragmented assemblies to high-quality bacteriophage genomes"
+      homepage: "https://phables.readthedocs.io/"
+      documentation: "https://phables.readthedocs.io/"
+      tool_dev_url: "https://github.com/Vini2/phables"
+      doi: "10.1093/bioinformatics/btad586"
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  - fastq:
+      type: file
+      description: "Paired-end reads in FASTQ format containing the reads used for assembly"
+      pattern: "*.{fastq, fastq.gz}"
+  - graph:
+      type: file
+      description: "Assembly graph in GFA format"
+      pattern: "*.{gfa, gfa.gz}"
+  - phables_config:
+      type: file
+      description: "Template Phables config file to identify database location"
+      pattern: "phables_config.yml"
+  - phables_db:
+      type: directory
+      description: PHROG and SMG files for unitig alignment.
+      pattern: "*phables_db/"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  - fasta:
+      type: file
+      description: "Resolved assembly graph elements in FASTA format"
+      pattern: "*.phables.fasta.gz"
+  - info:
+      type: file
+      description: "TSV file containing information about resolved assembly graph elements"
+      pattern: "*.phables_info.tsv"
+  - log:
+      type: file
+      description: "Log file containing information about the Phables run"
+      pattern: "*.phables.log"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@CarsonJM"
+maintainers:
+  - "@CarsonJM"

@@ -1,0 +1,7 @@
+name: "phables_install"
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - bioconda::phables=1.4.0

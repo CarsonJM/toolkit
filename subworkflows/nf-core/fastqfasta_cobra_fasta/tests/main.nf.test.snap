@@ -1,0 +1,63 @@
+{
+    "b_fragilis - fastq.gz - fasta.gz": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test1",
+                            "single_end": false,
+                            "assembler": "megahit",
+                            "mink": 21,
+                            "maxk": 141
+                        },
+                        "test1_COBRA_extended.fasta.gz:md5,d45ad9b43ce1c58936fab36b5bc20aab"
+                    ],
+                    [
+                        {
+                            "id": "test2",
+                            "single_end": false,
+                            "assembler": "megahit",
+                            "mink": 21,
+                            "maxk": 141
+                        },
+                        "test2_COBRA_extended.fasta.gz:md5,cf8402b8c3b6d616e43e35c087b4d694"
+                    ]
+                ],
+                "1": [
+                    "versions.yml:md5,bc429e9d4b8f557bac500d0bc0a51b56"
+                ],
+                "fasta_gz": [
+                    [
+                        {
+                            "id": "test1",
+                            "single_end": false,
+                            "assembler": "megahit",
+                            "mink": 21,
+                            "maxk": 141
+                        },
+                        "test1_COBRA_extended.fasta.gz:md5,d45ad9b43ce1c58936fab36b5bc20aab"
+                    ],
+                    [
+                        {
+                            "id": "test2",
+                            "single_end": false,
+                            "assembler": "megahit",
+                            "mink": 21,
+                            "maxk": 141
+                        },
+                        "test2_COBRA_extended.fasta.gz:md5,cf8402b8c3b6d616e43e35c087b4d694"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,bc429e9d4b8f557bac500d0bc0a51b56"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-09-08T06:39:08.126223012"
+    }
+}

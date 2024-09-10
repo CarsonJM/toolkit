@@ -1,0 +1,60 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTQGFA_PHABLES_FASTA"
+    script "../main.nf"
+    workflow "FASTQGFA_PHABLES_FASTA"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fastqgfa_phables_fasta"
+    tag "phables"
+    tag "phables/install"
+    tag "phables/run"
+
+    test("lambda - fastq.gz - gfa.gz") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id: 'test1' ],
+                        [
+                            file("${projectDir}/assets/test-datasets/genomics/lambda/illumina/fastq/SRR24085752_1.fastq.gz", checkIfExists: true),
+                            file("${projectDir}/assets/test-datasets/genomics/lambda/illumina/fastq/SRR24085752_2.fastq.gz", checkIfExists: true),
+                        ]
+                    ],
+                    [
+                        [ id: 'test2' ],
+                        [
+                            file("${projectDir}/assets/test-datasets/genomics/lambda/illumina/fastq/SRR24085752_copy_1.fastq.gz", checkIfExists: true),
+                            file("${projectDir}/assets/test-datasets/genomics/lambda/illumina/fastq/SRR24085752_copy_2.fastq.gz", checkIfExists: true),
+                        ]
+                    ]
+                )
+                input[1] = Channel.of(
+                    [
+                        [ id: 'test1' ],
+                        [
+                            file("${projectDir}/assets/test-datasets/genomics/lambda/illumina/gfa/SRR24085752.gfa.gz", checkIfExists: true),
+                        ]
+                    ],
+                    [
+                        [ id: 'test2' ],
+                        [
+                            file("${projectDir}/assets/test-datasets/genomics/lambda/illumina/gfa/SRR24085752_copy.gfa.gz", checkIfExists: true),
+                        ]
+                    ]
+                )
+                input[2] = "${projectDir}/assets/configs/phables/phables_config.yml"
+                input[3] = null
+                """
+            }
+        }
+        then {
+            assertAll (
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+}

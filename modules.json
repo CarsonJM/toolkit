@@ -45,9 +45,19 @@
                         "git_sha": "06c8865e36741e05ad32ef70ab3fac127486af48",
                         "installed_by": ["modules"]
                     },
+                    "genomad/download": {
+                        "branch": "master",
+                        "git_sha": "ad1f225fb65aa527d9143736e14db22c5944e70e",
+                        "installed_by": ["fasta_genomad_fastatsv"]
+                    },
+                    "genomad/endtoend": {
+                        "branch": "master",
+                        "git_sha": "ad1f225fb65aa527d9143736e14db22c5944e70e",
+                        "installed_by": ["fasta_genomad_fastatsv"]
+                    },
                     "megahit/megahit": {
                         "branch": "master",
-                        "git_sha": "4dfc58306d6eed198aa8066e7a5e627126089da3",
+                        "git_sha": "ad1f225fb65aa527d9143736e14db22c5944e70e",
                         "installed_by": ["fastq_readassembly_fasta"]
                     },
                     "multiqc": {
@@ -79,6 +89,11 @@
             },
             "subworkflows": {
                 "nf-core": {
+                    "fasta_genomad_fastatsv": {
+                        "branch": "master",
+                        "git_sha": "ad1f225fb65aa527d9143736e14db22c5944e70e",
+                        "installed_by": ["subworkflows"]
+                    },
                     "fastq_bowtie2_fastq": {
                         "branch": "master",
                         "git_sha": "4dfc58306d6eed198aa8066e7a5e627126089da3",
@@ -86,7 +101,7 @@
                     },
                     "fastq_readassembly_fasta": {
                         "branch": "master",
-                        "git_sha": "4dfc58306d6eed198aa8066e7a5e627126089da3",
+                        "git_sha": "ad1f225fb65aa527d9143736e14db22c5944e70e",
                         "installed_by": ["subworkflows"]
                     },
                     "fastqfasta_cobra_fasta": {

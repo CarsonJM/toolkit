@@ -1,0 +1,484 @@
+{
+    "sarscov2 - genome - fasta": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_plasmid.fna.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_plasmid_genes.tsv:md5,55818cae5a57381b77778076e99605e6"
+                    ]
+                ],
+                "10": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_genes.tsv:md5,f84d8a9fce3c92c49e78672bea16561f"
+                    ]
+                ],
+                "11": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_features.tsv:md5,868804cf1857d3c7e129086ec747c77c"
+                    ]
+                ],
+                "12": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_aggregated_classification.tsv:md5,702aead49cca96c98e43c5f032f60b26"
+                    ]
+                ],
+                "13": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_taxonomy.tsv:md5,44c6cf5ff4c836f66648457ae8deb0d5"
+                    ]
+                ],
+                "14": [
+                    "versions.yml:md5,17692db4ae585b447fe2897babeec56b"
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_plasmid_proteins.faa.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "3": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_plasmid_summary.tsv:md5,8c4ddaa8a90da779c11537be0fddb799"
+                    ]
+                ],
+                "4": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_virus.fna.gz:md5,483f4a5dfe60171c86ee9b7e6dff908b"
+                    ]
+                ],
+                "5": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_virus_genes.tsv:md5,f84d8a9fce3c92c49e78672bea16561f"
+                    ]
+                ],
+                "6": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_virus_proteins.faa.gz:md5,6850bd46dcb921e5cfb23bfbb8fcc12b"
+                    ]
+                ],
+                "7": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_virus_summary.tsv:md5,923b36db276dfee18ac1f1b57cae617e"
+                    ]
+                ],
+                "8": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_provirus.tsv:md5,93a6bca59b0bf7f57c0b9b60d2e57082"
+                    ]
+                ],
+                "9": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_proteins.faa.gz:md5,6850bd46dcb921e5cfb23bfbb8fcc12b"
+                    ]
+                ],
+                "features": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_features.tsv:md5,868804cf1857d3c7e129086ec747c77c"
+                    ]
+                ],
+                "genes": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_genes.tsv:md5,f84d8a9fce3c92c49e78672bea16561f"
+                    ]
+                ],
+                "plasmid_fasta": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_plasmid.fna.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "plasmid_genes": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_plasmid_genes.tsv:md5,55818cae5a57381b77778076e99605e6"
+                    ]
+                ],
+                "plasmid_proteins": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_plasmid_proteins.faa.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "plasmid_summary": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_plasmid_summary.tsv:md5,8c4ddaa8a90da779c11537be0fddb799"
+                    ]
+                ],
+                "proteins": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_proteins.faa.gz:md5,6850bd46dcb921e5cfb23bfbb8fcc12b"
+                    ]
+                ],
+                "provirus": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_provirus.tsv:md5,93a6bca59b0bf7f57c0b9b60d2e57082"
+                    ]
+                ],
+                "scores": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_aggregated_classification.tsv:md5,702aead49cca96c98e43c5f032f60b26"
+                    ]
+                ],
+                "taxonomy": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_taxonomy.tsv:md5,44c6cf5ff4c836f66648457ae8deb0d5"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,17692db4ae585b447fe2897babeec56b"
+                ],
+                "virus_fasta": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_virus.fna.gz:md5,483f4a5dfe60171c86ee9b7e6dff908b"
+                    ]
+                ],
+                "virus_genes": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_virus_genes.tsv:md5,f84d8a9fce3c92c49e78672bea16561f"
+                    ]
+                ],
+                "virus_proteins": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_virus_proteins.faa.gz:md5,6850bd46dcb921e5cfb23bfbb8fcc12b"
+                    ]
+                ],
+                "virus_summary": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_virus_summary.tsv:md5,923b36db276dfee18ac1f1b57cae617e"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-09-10T07:44:30.998615327"
+    },
+    "sarscov2 - genome - fasta - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_plasmid.fna.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_plasmid_genes.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "10": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_genes.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "11": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_features.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "12": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_aggregated_classification.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "13": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_taxonomy.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "14": [
+                    "versions.yml:md5,17692db4ae585b447fe2897babeec56b"
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_plasmid_proteins.faa.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "3": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_plasmid_summary.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "4": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_virus.fna.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "5": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_virus_genes.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "6": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_virus_proteins.faa.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "7": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_virus_summary.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "8": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_provirus.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "9": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_proteins.faa.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "features": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_features.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "genes": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_genes.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "plasmid_fasta": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_plasmid.fna.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "plasmid_genes": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_plasmid_genes.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "plasmid_proteins": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_plasmid_proteins.faa.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "plasmid_summary": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_plasmid_summary.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "proteins": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_proteins.faa.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "provirus": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_provirus.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "scores": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_aggregated_classification.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "taxonomy": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_taxonomy.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,17692db4ae585b447fe2897babeec56b"
+                ],
+                "virus_fasta": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_virus.fna.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "virus_genes": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_virus_genes.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "virus_proteins": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_virus_proteins.faa.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "virus_summary": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_virus_summary.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-09-10T07:45:03.056692599"
+    }
+}
