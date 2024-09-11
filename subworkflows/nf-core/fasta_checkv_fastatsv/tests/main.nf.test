@@ -1,0 +1,46 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTA_CHECKV_FASTATSV"
+    script "../main.nf"
+    workflow "FASTA_CHECKV_FASTATSV"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fasta_checkv_fastatsv"
+    tag "checkv"
+    tag "checkv/downloaddatabase"
+    tag "checkv/endtoend"
+
+    test("sarscov2 - genome - fasta") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'test1', single_end:false ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true),
+                    ],
+                    [
+                        [ id:'test2', single_end:false ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true),
+                    ]
+                )
+                input[1] = null
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.quality_summary_tsv,
+                    workflow.out.contamination_tsv,
+                    workflow.out.complete_genomes,
+                    workflow.out.viruses_fasta_gz,
+                    workflow.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+}

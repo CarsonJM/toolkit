@@ -1,0 +1,65 @@
+{
+    "sarscov2 - genome - fasta": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test1",
+                        "single_end": false
+                    },
+                    "test1_quality_summary.tsv:md5,f7aea0429fd38068bb26be4e16dafd6d"
+                ],
+                [
+                    {
+                        "id": "test2",
+                        "single_end": false
+                    },
+                    "test2_quality_summary.tsv:md5,7378f3a63fa5d7e4023f96aa12f0de1a"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test1",
+                        "single_end": false
+                    },
+                    "test1_contamination.tsv:md5,c4072dbfbb3f876baf12f15d65c0e7db"
+                ],
+                [
+                    {
+                        "id": "test2",
+                        "single_end": false
+                    },
+                    "test2_contamination.tsv:md5,ee7d35d11b98659798339fedb8e91bd6"
+                ]
+            ],
+            null,
+            [
+                [
+                    {
+                        "id": "test1",
+                        "single_end": false
+                    },
+                    "test1_viruses.fna.gz:md5,3622f87e08fc2c13101fc18a0e5e973b"
+                ],
+                [
+                    {
+                        "id": "test2",
+                        "single_end": false
+                    },
+                    "test2_viruses.fna.gz:md5,5593b561f5dac649dd02adbc1ff440e9"
+                ]
+            ],
+            [
+                "versions.yml:md5,6afef7256214d824a77009d1e067d84e",
+                "versions.yml:md5,928e9670447fc162976ff15c1f65e0bc",
+                "versions.yml:md5,928e9670447fc162976ff15c1f65e0bc"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-09-10T16:16:18.49338375"
+    }
+}

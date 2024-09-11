@@ -1,0 +1,66 @@
+nextflow_process {
+
+    name "Test Process CHECKV_ENDTOEND"
+    script "../main.nf"
+    process "CHECKV_ENDTOEND"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "checkv"
+    tag "checkv/endtoend"
+    tag "checkv/downloaddatabase"
+
+
+    setup {
+        run("CHECKV_DOWNLOADDATABASE") {
+            script "../../downloaddatabase/main.nf"
+        }
+    }
+
+    test("bacteroides_fragilis - genome - fasta") {
+        when {
+            process {
+                """
+                input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                ]
+                input[1] = CHECKV_DOWNLOADDATABASE.out.checkv_db
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.quality_summary,
+                    process.out.contamination,
+                    process.out.complete_genomes,
+                    process.out.viruses,
+                    process.out.versions).match() },
+                { assert new File(process.out.proviruses[0][1]).exists() },
+                { assert new File(process.out.completeness[0][1]).exists() }
+            )
+        }
+    }
+
+    test("bacteroides_fragilis - illumina - test1_contigs_fa_gz - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                ]
+                input[1] = CHECKV_DOWNLOADDATABASE.out.checkv_db
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+    }
+}

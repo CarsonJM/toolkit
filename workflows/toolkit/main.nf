@@ -22,6 +22,8 @@ include { methodsDescriptionText        } from '../../subworkflows/local/utils_n
 // Import subworkflows
 include { FASTQ_BOWTIE2_FASTQ           } from '../../subworkflows/nf-core/fastq_bowtie2_fastq'
 include { FASTQ_READASSEMBLY_FASTA      } from '../../subworkflows/nf-core/fastq_readassembly_fasta'
+include { FASTQFASTA_COBRA_FASTA        } from '../../subworkflows/nf-core/fastqfasta_cobra_fasta'
+include { FASTQGFA_PHABLES_FASTA        } from '../../subworkflows/nf-core/fastqgfa_phables_fasta'
 include { paramsSummaryMultiqc          } from '../../subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML        } from '../../subworkflows/nf-core/utils_nfcore_pipeline'
 
@@ -44,6 +46,11 @@ workflow TOOLKIT {
     ch_multiqc_files        = Channel.empty()
     ch_workdirs_to_clean    = Channel.empty()
 
+    /*
+    -------------------------------------------------
+        RAW READ QUALITY ASSESSMENT
+    -------------------------------------------------
+    */
     //
     // MODULE: Run FastQC on raw reads
     //
@@ -211,7 +218,11 @@ workflow TOOLKIT {
         ch_hostremoved_fastq_gz = ch_runmerged_fastq_gz
     }
 
-
+    /*
+    -------------------------------------------------
+        PREPROCESSED READ QUALITY ASSESSMENT
+    -------------------------------------------------
+    */
     if (parameters.run_fastp ||
         parameters.perform_run_merging ||
         parameters.run_bowtie2_host_removal) {
@@ -227,6 +238,18 @@ workflow TOOLKIT {
 
     /*
     -------------------------------------------------
+        READ-BASED TAXONOMY
+    -------------------------------------------------
+    */
+
+    /*
+    -------------------------------------------------
+        READ-BASED FUNCTION
+    -------------------------------------------------
+    */
+
+    /*
+    -------------------------------------------------
         READ ASSEMBLY
     -------------------------------------------------
     */
@@ -234,7 +257,7 @@ workflow TOOLKIT {
     // SUBWORKFLOW: Read assembly
     //
     FASTQ_READASSEMBLY_FASTA(
-        ch_preprocessed_fastq_gz,           // channel: [ [ meta.id, meta.single_end, meta.run, meta.group ], [ reads_1.fastq.gz, reads_2.fastq.gz ] ] (MANDATORY)
+        ch_preprocessed_fastq_gz,           // channel: [ [ meta.id, meta.single_end, meta.run, meta.group ], [ reads_1.fastq.gz, reads_2.fastq.gz ] ]
         parameters.run_megahit_single,      // boolean: false
         parameters.run_megahit_coassembly,  // boolean: false
         parameters.run_spades_single,       // boolean: false
@@ -244,8 +267,7 @@ workflow TOOLKIT {
         parameters.run_penguin_coassembly,  // boolean: false
     )
     ch_assemblies_fasta_gz  = FASTQ_READASSEMBLY_FASTA.out.assemblies_fasta_gz
-    ch_assembly_graph_gz    = FASTQ_READASSEMBLY_FASTA.out.assembly_graph_gz
-    ch_spades_logs          = FASTQ_READASSEMBLY_FASTA.out.spades_logs
+    ch_assembly_gfa_gz      = FASTQ_READASSEMBLY_FASTA.out.assembly_graph_gz
     ch_multiqc_files        = ch_multiqc_files.mix(FASTQ_READASSEMBLY_FASTA.out.multiqc_files)
     ch_versions             = FASTQ_READASSEMBLY_FASTA.out.versions
 
@@ -254,24 +276,107 @@ workflow TOOLKIT {
         ASSEMBLY EXTENSION
     -------------------------------------------------
     */
+    //
+    // SUBWORKFLOW: Extend assemblies
+    //
+    FASTQFASTAGFA_ASSEMBLYEXTENSION_FASTA(
+        ch_preprocessed_fastq_gz,   // channel: [ [ meta.id, meta.single_end, meta.run, meta.group ], [ reads_1.fastq.gz, reads_2.fastq.gz ] ]
+        parameters.run_cobra,       // boolean: false
+        ch_assemblies_fasta_gz,     // channel: [ [ meta.id, meta.single_end, meta.assembler, meta.mink, meta.maxk ], [ fasta.gz ] ]
+        ch_query_contigs_tsv,       // channel: [ [ meta.id, meta.single_end, meta.assembler, meta.mink, meta.maxk ], [ queies.tsv ] ]
+        parameters.run_phables,     // boolean: false
+        ch_assemblies_gfa_gz,       // channel: [ [ meta.id, meta.single_end, meta.assembler, meta.mink, meta.maxk ], [ gfa.gz ] ]
+        phables_config,             // channel: path(phables_config.yml)
+        phables_db                  // channel: path(phables_db)
+    )
+    ch_extended_fasta_gz    = FASTQFASTAGFA_ASSEMBLYEXTENSION_FASTA.out.fasta_gz
+    ch_versions             = FASTQFASTAGFA_ASSEMBLYEXTENSION_FASTA.out.versions
+
+    // combine assemblies, extended assemblies, and input fastas
+    ch_combined_fasta_gz = input_fastas
+        .mix(ch_assemblies_fasta_gz)
+        .mix(ch_extended_fasta_gz)
 
     /*
     -------------------------------------------------
-        ASSEMBLY QC
+        ASSEMBLY QC/FILTERING
     -------------------------------------------------
     */
 
     /*
     -------------------------------------------------
-        VIRUS IDENTIFICATION
+        MGE IDENTIFICATION
     -------------------------------------------------
     */
+    //
+    // SUBWORKFLOW: Identify viruses/plasmids with geNomad
+    //
+    if (parameters.run_genomad || parameters.run_pyhmmer) {
+        FASTA_MGEIDENTIFICATION_FASTATSV(
+            ch_assembly_qc_fasta_gz,    // channel: [ [ meta.id, meta.single_end, meta.run, meta.group ], fasta.gz ]
+            ch_assembly_qc_faa_gz,      // channel: [ [ meta.id, meta.single_end, meta.run, meta.group ], faa.gz ]
+            parameter.run_genomad,      // boolean: false
+            parameters.genomad_db,      // val: path(genomad_db)
+            parameters.run_pyhmmer      // boolean: false
+            parameters.use_mge_fastas   // boolean: false
+        )
+        ch_mge_fasta_gz         = FASTA_MGEIDENTIFICATION_FASTATSV.out.virus_fasta_gz
+            .mix(FASTA_MGEIDENTIFICATION_FASTATSV.out.plasmid_fasta_gz)
+            .mix(FASTA_MGEIDENTIFICATION_FASTATSV.out.pyhmmer_virus_fasta_gz)
+            .mix(FASTA_MGEIDENTIFICATION_FASTATSV.out.pyhmmer_plasmid_fasta_gz)
+        ch_mge_faa_gz           = FASTA_MGEIDENTIFICATION_FASTATSV.out.virus_faa_gz.mix(FASTA_MGEIDENTIFICATION_FASTATSV.out.plasmid_faa_gz)
+        ch_genomad_scores_tsv   = FASTA_MGEIDENTIFICATION_FASTATSV.out.scores_tsv
+        ch_genomad_taxonomy_tsv = FASTA_MGEIDENTIFICATION_FASTATSV.out.taxonomy_tsv
+        ch_genomad_genes_tsv    = FASTA_MGEIDENTIFICATION_FASTATSV.out.genes_tsv
+        ch_genomad_features_tsv = FASTA_MGEIDENTIFICATION_FASTATSV.out.features_tsv
+        ch_pyhmmer_tsv          = FASTA_MGEIDENTIFICATION_FASTATSV.out.pyhmmer_tsv
+    } else {
+        ch_mge_fasta_gz         = ch_assembly_qc_fasta_gz
+        ch_mge_faa_gz           = ch_assembly_qc_faa_gz
+        ch_genomad_scores_tsv   = []
+        ch_genomad_taxonomy_tsv = []
+        ch_genomad_genes_tsv    = []
+        ch_genomad_features_tsv = []
+        ch_pyhmmer_tsv          = []
+    }
 
     /*
     -------------------------------------------------
         VIRUS QC
     -------------------------------------------------
     */
+    //
+    // SUBWORKFLOW: Identify viruses/plasmids with geNomad
+    //
+    if (parameters.run_genomad || parameters.run_pyhmmer) {
+        FASTA_MGEIDENTIFICATION_FASTATSV(
+            ch_assembly_qc_fasta_gz,    // channel: [ [ meta.id, meta.single_end, meta.run, meta.group ], fasta.gz ]
+            ch_assembly_qc_faa_gz,      // channel: [ [ meta.id, meta.single_end, meta.run, meta.group ], faa.gz ]
+            parameter.run_genomad,      // boolean: false
+            parameters.genomad_db,      // val: path(genomad_db)
+            parameters.run_pyhmmer      // boolean: false
+            parameters.use_mge_fastas   // boolean: false
+        )
+        ch_mge_fasta_gz         = FASTA_MGEIDENTIFICATION_FASTATSV.out.virus_fasta_gz
+            .mix(FASTA_MGEIDENTIFICATION_FASTATSV.out.plasmid_fasta_gz)
+            .mix(FASTA_MGEIDENTIFICATION_FASTATSV.out.pyhmmer_virus_fasta_gz)
+            .mix(FASTA_MGEIDENTIFICATION_FASTATSV.out.pyhmmer_plasmid_fasta_gz)
+        ch_mge_faa_gz           = FASTA_MGEIDENTIFICATION_FASTATSV.out.virus_faa_gz.mix(FASTA_MGEIDENTIFICATION_FASTATSV.out.plasmid_faa_gz)
+        ch_genomad_scores_tsv   = FASTA_MGEIDENTIFICATION_FASTATSV.out.scores_tsv
+        ch_genomad_taxonomy_tsv = FASTA_MGEIDENTIFICATION_FASTATSV.out.taxonomy_tsv
+        ch_genomad_genes_tsv    = FASTA_MGEIDENTIFICATION_FASTATSV.out.genes_tsv
+        ch_genomad_features_tsv = FASTA_MGEIDENTIFICATION_FASTATSV.out.features_tsv
+        ch_pyhmmer_tsv          = FASTA_MGEIDENTIFICATION_FASTATSV.out.pyhmmer_tsv
+    } else {
+        ch_mge_fasta_gz         = ch_assembly_qc_fasta_gz
+        ch_mge_faa_gz           = ch_assembly_qc_faa_gz
+        ch_genomad_scores_tsv   = []
+        ch_genomad_taxonomy_tsv = []
+        ch_genomad_genes_tsv    = []
+        ch_genomad_features_tsv = []
+        ch_pyhmmer_tsv          = []
+    }
+
 
     /*
     -------------------------------------------------

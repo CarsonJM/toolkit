@@ -1,0 +1,26 @@
+{
+    "No input: download only - stub": {
+        "content": [
+            [
+                "versions.yml:md5,29c4fbe7a6cb8b6c0913363d718cce9f"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-09-10T13:41:55.53660563"
+    },
+    "No input: download only": {
+        "content": [
+            [
+                "versions.yml:md5,29c4fbe7a6cb8b6c0913363d718cce9f"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-09-10T13:41:35.511334063"
+    }
+}

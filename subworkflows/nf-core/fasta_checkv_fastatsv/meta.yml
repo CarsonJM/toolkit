@@ -1,0 +1,70 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fasta_checkv_fastatsv"
+description: Assess the completeness/contamination of viral sequences.
+keywords:
+  - virus
+  - phage
+  - assembly
+  - quality
+  - completeness
+  - contamination
+  - checkv
+components:
+  - checkv/downloaddatabase
+  - checkv/endtoend
+
+input:
+  - virus_fasta_gz:
+      type: file
+      description: |
+        The input channel containing a FastA files with viral sequences.
+        Structure: [ val(meta), path(fasta.gz) ]
+      pattern: "*.{fasta|fa|fna|fasta.gz|fa.gz|fna.gz}"
+  - checkv_db:
+      type: directory
+      description: |
+        The directory containing CheckV's database.
+        Structure: path(checkv_db)
+
+output:
+  - viruses_fasta_gz:
+      type: file
+      description: |
+        Channel containing virus sequences output CheckV.
+        Structure: [ val(meta), path(viruses.fna.gz) ]
+      pattern: "*_virus.fna.gz"
+  - proviruses_fasta_gz:
+      type: file
+      description: |
+        Channel containing provirus sequences trimmed by CheckV.
+        Structure: [ val(meta), path(proviruses.fna.gz) ]
+      pattern: "*_provirus.fna.gz"
+  - quality_summary_tsv:
+      type: file
+      description: |
+        Channel containing the quality summary TSV file output by CheckV.
+        Structure: [ val(meta), path(quality_summary.tsv) ]
+      pattern: "*_quality_summary.tsv"
+  - contamination_tsv:
+      type: file
+      description: |
+        Channel containing the contamination TSV file output by CheckV.
+        Structure: [ val(meta), path(contamination.tsv) ]
+      pattern: "*_contamination.tsv"
+  - completeness_tsv:
+      type: file
+      description: |
+        Channel containing the completeness TSV file output by CheckV.
+        Structure: [ val(meta), path(completeness.tsv) ]
+      pattern: "*_completeness.tsv"
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+
+authors:
+  - "@CarsonJM"
+maintainers:
+  - "@CarsonJM"
